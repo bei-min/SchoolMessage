@@ -5,12 +5,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class NewsOP {
     Statement statement = new DBC().getStatement();
-    ResultSet find(String ID){
+    ResultSet find(int ID){
         try{
-            String str = "";//查找是否存在消息记录
+            String str = "select id from 信息 where id = " + ID + ";";//查找是否存在消息记录
             ResultSet resultSet = statement.executeQuery(str);
             if(resultSet.next())
                 return resultSet;
@@ -20,29 +21,27 @@ public class NewsOP {
         return null;
     }
 
-    int add(ArrayList<String> list){
+    int add(int id ,String classify , String description , String data){
         try{
-            String str = "";//添加消息
+            String str = "insert into 信息 values (null,"+","+classify+","+description+","+data+",null,null"+");";//添加消息
             return statement.executeUpdate(str);
         }catch (Exception e) {
             System.out.println("NewsOP错误！");
         }
         return 0;
     }
-    int dele(String ID){
+    int dele(int ID){
         try{
-            String str = "";//删除档案
-            statement.executeUpdate(str);
-            str = "";//删除某个语句
+            String str = "delete from 信息 where id = " + ID  + ";";//删除语句 信息表
             return statement.executeUpdate(str);
         }catch (Exception e) {
             System.out.println("NewsOP错误！");
         }
         return 0;
     }
-    int re(ArrayList<String> list){
+    int re(int id , String description , String data){
         try{
-            String str = "";//更改
+            String str = "update 信息 set description = "+description+",image = " + data +"where id = " +id+";";//更改
             return statement.executeUpdate(str);
         }catch (Exception e) {
             System.out.println("NewsOP错误！");
