@@ -9,7 +9,7 @@ public class MemberOP {
     Statement statement = new DBC().getStatement();
     boolean find(String name){
         try{
-            String str = "";//查找是否存在改昵称的记录
+            String str = "select username from 用户 where username = " + name + ";"; //查找是否存在昵称的记录
             ResultSet resultSet = statement.executeQuery(str);
             if(resultSet.next())
                 return true;
@@ -20,7 +20,7 @@ public class MemberOP {
     }
     boolean find(String name, String password){
         try{
-            String str = "";//查找昵称与密码符合的sql语句
+            String str = "select username,password from 用户 where username ="+ name +"and password = " + password +";";//查找昵称与密码符合的sql语句
             ResultSet resultSet = statement.executeQuery(str);
             if(resultSet.next())
                 return true;
@@ -29,12 +29,12 @@ public class MemberOP {
         }
         return false;
     }
-    int add(String name , String password){
+    int add(String name , String password,String email){
         if(!find(name)){
             try{
-                String str = "";//添加档案
+                String str = "create table " + name +"( id int primary key)";//添加档案
                 statement.executeUpdate(str);
-                str = "";//添加语句
+                str = "insert into 用户 values (null,"+name+","+email+","+password+");";//添加语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
@@ -48,9 +48,9 @@ public class MemberOP {
     int dele(String name , String password){
         if(find(name , password)){
             try{
-                String str = "";//删除档案
+                String str = "drop table "+name+";";//删除档案
                 statement.executeUpdate(str);
-                str = "";//删除某个语句
+                str = "delete from 用户 where username = " + name +"and password = " + password + ";";//删除某个语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
@@ -61,12 +61,12 @@ public class MemberOP {
         }
         return 0;
     }
-    int re(String name , String password){
-        if(find(name , password)){
+    int re(String name , String oldname ,String email , String password){
+        if(find(oldname )){
             try{
-                String str = "";//更改档案（表名）
+                String str = "RENAME TABLE " + oldname +"to " + name+";";//更改档案（表名）
                 statement.executeUpdate(str);
-                str = "";//更改语句
+                str = "update 用户 set username ="+name+",email = " + email +",password = " + password +"where name = " + oldname+";";//更改语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
