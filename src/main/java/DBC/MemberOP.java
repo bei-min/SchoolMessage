@@ -6,16 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class MemberOP {
-    Statement statement;
-    MemberOP(){
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/main", "root", "Gaowc2004");
-            statement = connection.createStatement();
-        }catch (Exception e){
-            System.out.println("连接数据库失败！");
-        }
-    }
+    Statement statement = new DBC().getStatement();
     boolean find(String name){
         try{
             String str = "";//查找是否存在改昵称的记录
@@ -41,7 +32,9 @@ public class MemberOP {
     int add(String name , String password){
         if(!find(name)){
             try{
-                String str = "";//添加语句
+                String str = "";//添加档案
+                statement.executeUpdate(str);
+                str = "";//添加语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
@@ -55,7 +48,9 @@ public class MemberOP {
     int dele(String name , String password){
         if(find(name , password)){
             try{
-                String str = "";//删除某个语句
+                String str = "";//删除档案
+                statement.executeUpdate(str);
+                str = "";//删除某个语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
@@ -69,7 +64,9 @@ public class MemberOP {
     int re(String name , String password){
         if(find(name , password)){
             try{
-                String str = "";//更改语句
+                String str = "";//更改档案（表名）
+                statement.executeUpdate(str);
+                str = "";//更改语句
                 return statement.executeUpdate(str);
             }catch (Exception e) {
                 System.out.println("MemberOP错误！");
