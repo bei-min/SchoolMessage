@@ -1,3 +1,7 @@
+
+import DBC.NewsOP;
+import Execute.News;
+import com.alibaba.fastjson.JSON;
 import netscape.javascript.JSObject;
 
 import javax.servlet.ServletException;
@@ -7,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 @WebServlet("/InquireNews")
 public class InquireNews extends HttpServlet {
@@ -16,9 +21,14 @@ public class InquireNews extends HttpServlet {
         response.addHeader(  "Access-Control-Allow-Origin", "*");
         response.addHeader(  "Access-Control-Allow-Method","POST,GET");
 
-
+        ArrayList<News> news = new NewsOP().show();
         PrintWriter out = response.getWriter();
-        out.print("I Love JavaScript");
+        for (News i:
+             news) {
+            String jsonstr = JSON.toJSONString(i);
+            out.print(jsonstr);
+        }
+
     }
 
     @Override

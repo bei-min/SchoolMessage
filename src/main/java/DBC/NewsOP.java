@@ -1,5 +1,7 @@
 package DBC;
 
+import Execute.News;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -47,5 +49,28 @@ public class NewsOP {
             System.out.println("NewsOP错误！");
         }
         return 0;
+    }
+
+    public ArrayList<News> show(){
+        ArrayList<News> res = new ArrayList<>();
+        try{
+            String str = "select * from 信息 order by id desc limit 1; ";//更改
+            ResultSet resultSet = statement.executeQuery(str);
+            //System.out.println(resultSet.next());
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String classify = resultSet.getString("classify");
+                String description = resultSet.getString("description");
+//                String image = resultSet.getString("image");
+//                String document = resultSet.getString("document");
+//                String video = resultSet.getString("video");
+                News news = new News(id , classify , description , null , null , null);
+                //System.out.println(news);
+                res.add(news);
+            }
+        }catch (Exception e) {
+            System.out.println("NewsOPshow错误！");
+        }
+        return res;
     }
 }

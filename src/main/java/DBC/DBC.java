@@ -9,7 +9,7 @@ public class DBC {
     DBC(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/main", "root", "Gaowc2004");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/schoolmessage", "root", "Gaowc2004");
             statement = connection.createStatement();
         }catch (Exception e){
             System.out.println("连接数据库失败！");
