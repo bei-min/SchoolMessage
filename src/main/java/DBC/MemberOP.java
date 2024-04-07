@@ -18,14 +18,14 @@ public class MemberOP {
         }
         return false;
     }
-    boolean find(String name, String password){
+    public boolean find(String name, String password){
         try{
-            String str = "select username,password from 用户 where username ="+ name +"and password = " + password +";";//查找昵称与密码符合的sql语句
+            String str = "select username,password from 用户 where username = '"+ name +"' and password = '" + password +"';";//查找昵称与密码符合的sql语句
             ResultSet resultSet = statement.executeQuery(str);
             if(resultSet.next())
                 return true;
         }catch (Exception e) {
-            System.out.println("MemberOP错误！");
+            System.out.println("MemberOPFind错误！");
         }
         return false;
     }

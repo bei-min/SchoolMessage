@@ -2,44 +2,46 @@ package Execute;
 
 import DBC.NewsOP;
 
+import java.util.ArrayList;
+
 public class News {
     int id;
-    String classify;
-    String description;
-    String image;
-    String document;
-    String video;
+    String title;
+    int f;
+    String imgurl;
+    String content;
+    String person;
 
-    public News(int id, String classify, String description, String image, String document, String video) {
+    public News(int id, String title, int f, String imgurl, String content, String person) {
         this.id = id;
-        this.classify = classify;
-        this.description = description;
-        this.image = image;
-        this.document = document;
-        this.video = video;
+        this.title = title;
+        this.f = f;
+        this.imgurl = imgurl;
+        this.content = content;
+        this.person = person;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getClassify() {
-        return classify;
+    public String getTitle() {
+        return title;
     }
 
-    public String getDescription() {
-        return description;
+    public int getF() {
+        return f;
     }
 
-    public String getImage() {
-        return image;
+    public String getImgurl() {
+        return imgurl;
     }
 
-    public String getDocument() {
-        return document;
+    public String getContent() {
+        return content;
     }
 
-    public String getVideo() {
-        return video;
+    public String getPerson() {
+        return person;
     }
 }

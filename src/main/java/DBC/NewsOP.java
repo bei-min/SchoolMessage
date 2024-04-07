@@ -1,6 +1,8 @@
 package DBC;
 
 import Execute.News;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,21 +13,30 @@ import java.util.Objects;
 
 public class NewsOP {
     Statement statement = new DBC().getStatement();
-    ResultSet find(int ID){
+    public News find(int ID){
         try{
-            String str = "select id from 信息 where id = " + ID + ";";//查找是否存在消息记录
+            String str = "select * from 信息 where id = " + ID + ";";//查找是否存在消息记录
             ResultSet resultSet = statement.executeQuery(str);
-            if(resultSet.next())
-                return resultSet;
+            if(resultSet.next()){
+                String title = resultSet.getString("title");
+                int f = resultSet.getInt("f");
+                //System.out.println(title);
+                String Imgurl = resultSet.getString("image");
+                String content = resultSet.getString("content");
+                String person = resultSet.getString("person");
+
+                return new News(ID , title , f , Imgurl , content , person);
+            }
         }catch (Exception e) {
-            System.out.println("NewsOP错误！");
+            System.out.println("NewsOPFind错误！");
         }
         return null;
     }
 
-    int add(int id ,String classify , String description , String data){
+    public int add(String title, int f, String imgurl, String content, String person){
         try{
-            String str = "insert into 信息 values (null,"+","+classify+","+description+","+data+",null,null"+");";//添加消息
+            String str = "insert into 信息 values (null,'" + title + "'," + f + ",'" + imgurl + "','" + content + "','" + person + "');";//添加消息
+            //System.out.println(str);
             return statement.executeUpdate(str);
         }catch (Exception e) {
             System.out.println("NewsOP错误！");
@@ -51,26 +62,16 @@ public class NewsOP {
         return 0;
     }
 
-    public ArrayList<News> show(){
-        ArrayList<News> res = new ArrayList<>();
-        try{
-            String str = "select * from 信息 order by id desc limit 1; ";//更改
-            ResultSet resultSet = statement.executeQuery(str);
-            //System.out.println(resultSet.next());
-            while(resultSet.next()){
-                int id = resultSet.getInt("id");
-                String classify = resultSet.getString("classify");
-                String description = resultSet.getString("description");
-//                String image = resultSet.getString("image");
-//                String document = resultSet.getString("document");
-//                String video = resultSet.getString("video");
-                News news = new News(id , classify , description , null , null , null);
-                //System.out.println(news);
-                res.add(news);
+    public ArrayList<String> op(String Imgurl){
+        ArrayList<String> imgurl = new ArrayList<>();
+        String cnt = "";
+        for (int i = 0 ; i < Imgurl.length() ; i ++) {
+            if(Imgurl.charAt(i) == ','){
+                imgurl.add(cnt);
+                cnt = "";
             }
-        }catch (Exception e) {
-            System.out.println("NewsOPshow错误！");
+            else cnt += Imgurl.charAt(i);
         }
-        return res;
+        return imgurl;
     }
 }
