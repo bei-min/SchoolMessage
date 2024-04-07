@@ -1,5 +1,6 @@
 package DBC;
 
+import Execute.CharChange;
 import Execute.News;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -13,19 +14,21 @@ import java.util.Objects;
 
 public class NewsOP {
     Statement statement = new DBC().getStatement();
+    CharChange charChange = new CharChange();
     public News find(int ID){
         try{
             String str = "select * from 信息 where id = " + ID + ";";//查找是否存在消息记录
             ResultSet resultSet = statement.executeQuery(str);
             if(resultSet.next()){
-                String title = resultSet.getString("title");
+                String title = charChange.UTF_to_ISO(resultSet.getString("title"));
                 int f = resultSet.getInt("f");
-                //System.out.println(title);
-                String Imgurl = resultSet.getString("image");
-                String content = resultSet.getString("content");
-                String person = resultSet.getString("person");
+                String Imgurl = charChange.UTF_to_ISO(resultSet.getString("image"));
+                String content = charChange.UTF_to_ISO(resultSet.getString("content"));
+                String person = charChange.UTF_to_ISO(resultSet.getString("person"));
+                String classify = charChange.UTF_to_ISO(resultSet.getString("classify"));
+                int point = resultSet.getInt("point");
 
-                return new News(ID , title , f , Imgurl , content , person);
+                return new News(ID , title , f , Imgurl , content , person , classify , point);
             }
         }catch (Exception e) {
             System.out.println("NewsOPFind错误！");
@@ -33,9 +36,33 @@ public class NewsOP {
         return null;
     }
 
-    public int add(String title, int f, String imgurl, String content, String person){
+    public ArrayList<News> find(String x){
         try{
-            String str = "insert into 信息 values (null,'" + title + "'," + f + ",'" + imgurl + "','" + content + "','" + person + "');";//添加消息
+            String str = "select * from 信息 where classify like '%" + x + "%';";//查找是否存在消息记录
+            ResultSet resultSet = statement.executeQuery(str);
+            ArrayList<News> ans = new ArrayList<>();
+            while(resultSet.next()){
+                int id = resultSet.getInt("id");
+                String title = charChange.UTF_to_ISO(resultSet.getString("title"));
+                int f = resultSet.getInt("f");
+                String Imgurl = charChange.UTF_to_ISO(resultSet.getString("image"));
+                String content = charChange.UTF_to_ISO(resultSet.getString("content"));
+                String person = charChange.UTF_to_ISO(resultSet.getString("person"));
+                String classify = charChange.UTF_to_ISO(resultSet.getString("classify"));
+                int point = resultSet.getInt("point");
+                News news = new News(id , title , f , Imgurl , content , person , classify , point);
+                ans.add(news);
+            }
+            return ans;
+        }catch (Exception e) {
+            System.out.println("NewsOPFind错误！");
+        }
+        return null;
+    }
+
+    public int add(String title, String imgurl, String content, String person, String classify){
+        try{
+            String str = "insert into 信息 values (null,'" + title + "'," + "null" + ",'" + imgurl + "','" + content + "','" + person + "','" + classify + "'," + "null" + ");";//添加消息
             //System.out.println(str);
             return statement.executeUpdate(str);
         }catch (Exception e) {

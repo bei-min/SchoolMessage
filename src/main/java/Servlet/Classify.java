@@ -1,27 +1,22 @@
 package Servlet;
 
 import DBC.NewsOP;
+import Execute.CharChange;
 import Execute.News;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import netscape.javascript.JSObject;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
-@WebServlet("/Servlet.InquireNews")
-public class InquireNews extends HttpServlet {
+@WebServlet("/Servlet.Classify")
+public class Classify extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //System.out.println("Get");
         doPost(request , response);
     }
 
@@ -29,14 +24,14 @@ public class InquireNews extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.addHeader(  "Access-Control-Allow-Origin", "*");
         response.addHeader(  "Access-Control-Allow-Method","POST , GET");
+        String classify = new CharChange().ISO_to_UTF(request.getParameter("classify"));
         String Sum = request.getParameter("sum");
-        int sum = Integer.parseInt(Sum) * 5 + 1;
+        int sum = Integer.parseInt(Sum);
 
+        ArrayList<News> ClassList = new NewsOP().find(classify);
         ArrayList<News> NewsList = new ArrayList<>();
-        NewsOP newsop = new NewsOP();
-        for(int i = sum ; i <= (sum + 10) ; i ++){
-            if(newsop.find(i) == null) break;
-            NewsList.add(newsop.find(i));
+        for(int i = sum ; i < Math.min((sum + 3) , ClassList.size()) ; i ++){
+            NewsList.add(ClassList.get(i));
         }
         PrintWriter out = response.getWriter();
         JSON json = new JSONArray(NewsList);
