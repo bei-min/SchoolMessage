@@ -36,9 +36,14 @@ public class NewsOP {
         return null;
     }
 
-    public ArrayList<News> find(String x){
+    public ArrayList<News> find(String table , String x){
         try{
-            String str = "select * from 信息 where classify like '%" + x + "%';";//查找是否存在消息记录
+            String str = null;
+            if(table == "classify")
+                str = "select * from 信息 where classify like '%" + x + "%';";
+            else
+                str = "select * from 信息 where person = '" + x + "';";
+            //System.out.println(str);
             ResultSet resultSet = statement.executeQuery(str);
             ArrayList<News> ans = new ArrayList<>();
             while(resultSet.next()){
@@ -66,7 +71,7 @@ public class NewsOP {
             //System.out.println(str);
             return statement.executeUpdate(str);
         }catch (Exception e) {
-            System.out.println("NewsOP错误！");
+            System.out.println("NewsOPADD错误！");
         }
         return 0;
     }
