@@ -5,6 +5,7 @@ import Execute.News;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -41,8 +42,12 @@ public class NewsOP {
             String str = null;
             if(table == "classify")
                 str = "select * from 信息 where classify like '%" + x + "%';";
-            else
+            else if(table == "person")
                 str = "select * from 信息 where person = '" + x + "';";
+            else if(table == "search")
+                str = "select * from 信息 where content like '%" + x + "%'"+"or title like '%" + x  + "%';";
+            else if(table == "ID")
+                str = "select * from 信息 where id = " + Integer.parseInt(x) + ";";
             //System.out.println(str);
             ResultSet resultSet = statement.executeQuery(str);
             ArrayList<News> ans = new ArrayList<>();

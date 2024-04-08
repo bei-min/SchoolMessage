@@ -30,7 +30,7 @@ public class InquireNews extends HttpServlet {
         response.addHeader(  "Access-Control-Allow-Origin", "*");
         response.addHeader(  "Access-Control-Allow-Method","POST , GET");
         String Sum = request.getParameter("sum");
-        int sum = Integer.parseInt(Sum) * 5 + 1;
+        int sum = Integer.parseInt(Sum) * 10 + 1;
 
         ArrayList<News> NewsList = new ArrayList<>();
         NewsOP newsop = new NewsOP();
