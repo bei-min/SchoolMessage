@@ -25,9 +25,11 @@ public class InquireMemberNews extends HttpServlet {
         response.addHeader(  "Access-Control-Allow-Origin", "*");
         response.addHeader(  "Access-Control-Allow-Method","POST,GET");
 
-        String username = new CharChange().ISO_to_UTF(request.getParameter("username"));
+        String username = request.getParameter("username");
         String Sum = request.getParameter("sum");
         int sum = Integer.parseInt(Sum) * 10 + 1;
+
+        //System.out.println(username);
 
         ArrayList<News> ClassList = new NewsOP().find("person" , username);
         ArrayList<News> NewsList = new ArrayList<>();

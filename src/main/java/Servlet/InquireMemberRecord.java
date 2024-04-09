@@ -27,7 +27,6 @@ public class InquireMemberRecord extends HttpServlet {
         String username = new CharChange().ISO_to_UTF(request.getParameter("username"));
         username = request.getParameter("username");
         MemberOP memberOP = new MemberOP();
-        System.out.println(username);
 
         PrintWriter out = response.getWriter();
         String json = JSON.toJSONString(memberOP.find(username));

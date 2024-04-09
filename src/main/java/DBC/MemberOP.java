@@ -21,10 +21,7 @@ public class MemberOP {
                 String Imgurl = charChange.UTF_to_ISO(resultSet.getString("Imgurl"));
                 String reginTime = charChange.UTF_to_ISO(resultSet.getString("reginTime"));
                 int estate = resultSet.getInt("estate");
-                int browse = resultSet.getInt("browse");
-                int praise = resultSet.getInt("praise");
-                int collect = resultSet.getInt("collect");
-                Record record = new Record(id , username , email , Imgurl , reginTime , estate , browse , praise , collect);
+                Record record = new Record(id , username , email , Imgurl , reginTime , estate);
                 return record;
             }
         }catch (Exception e) {
